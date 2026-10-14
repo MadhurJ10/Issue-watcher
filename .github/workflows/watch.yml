@@ -3,7 +3,7 @@ name: Issue Watcher
 on:
   schedule:
     # Every 15 minutes
-    - cron: "*/15 * * * *"
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     # Allow manual trigger
 
