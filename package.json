@@ -1,0 +1,15 @@
+{
+  "name": "issue-watcher",
+  "version": "1.0.0",
+  "description": "GitHub Actions-based issue watcher that finds beginner-friendly issues and sends Telegram notifications",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dry-run": "cross-env DRY_RUN=1 node src/index.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT"
+}

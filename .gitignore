@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# secrets: never commit these
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# NOTE: do NOT ignore state/. The bot commits seen.json and meta.json there.

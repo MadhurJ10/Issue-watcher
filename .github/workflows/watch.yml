@@ -1,0 +1,70 @@
+name: Issue Watcher
+
+on:
+  schedule:
+    # Every 15 minutes
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    # Allow manual trigger
+
+concurrency:
+  group: issue-watcher
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can pull/push cleanly
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Issue Watcher
+        id: run_watcher
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_PROVIDER: ${{ secrets.AI_PROVIDER }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
+        run: node src/index.js
+
+      - name: Commit and push state
+        # Run even if the watcher had a partial failure, but not on hard config/secret errors.
+        # The watcher exits 0 for partial failures, non-zero only for config/secret issues.
+        # `if: always()` ensures we commit even if other steps had issues, but the
+        # `steps.run_watcher.outcome != 'cancelled'` guard avoids committing on cancellation.
+        if: always() && steps.run_watcher.outcome != 'cancelled'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Pull with rebase to avoid conflicts from concurrent runs
+          git pull --rebase origin ${{ github.ref_name }} || true
+
+          # Only commit if there's an actual diff in state/
+          if git diff --quiet state/; then
+            echo "No state changes to commit."
+          else
+            git add state/
+            git commit -m "chore: update state [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+            echo "State committed and pushed."
+          fi

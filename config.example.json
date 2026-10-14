@@ -1,0 +1,46 @@
+{
+  "discovery": {
+    "enabled": false,
+    "languages": ["typescript", "javascript"],
+    "labels": ["good first issue", "help wanted"],
+    "excludeLabels": ["needs-design", "discussion", "rfc", "epic", "breaking-change", "wontfix", "duplicate"],
+    "minStars": 300,
+    "maxStars": 30000,
+    "maxResultsPerRun": 50
+  },
+  "watchlist": [
+    "owner/repo-one",
+    "owner/repo-two"
+  ],
+  "filters": {
+    "maxBodyChars": 4500,
+    "minBodyChars": 80,
+    "maxIssueAgeHours": 72,
+    "repoMustBePushedWithinDays": 30,
+    "skipIfCommentMatches": [
+      "can i take",
+      "i'd like to work",
+      "i would like to work",
+      "working on this",
+      "assign me",
+      "assigned to me",
+      "i'll take",
+      "i will take",
+      "picking this up"
+    ]
+  },
+  "scoring": {
+    "notifyThreshold": 3,
+    "useAI": true,
+    "ai": {
+      "timeoutMs": 15000,
+      "maxRetries": 1,
+      "maxIssuesPerRun": 10,
+      "circuitBreakerFailures": 3
+    }
+  },
+  "notify": {
+    "quietHoursIST": { "start": "01:00", "end": "07:00" },
+    "maxMessagesPerRun": 10
+  }
+}
