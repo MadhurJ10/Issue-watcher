@@ -10,7 +10,18 @@
   },
   "watchlist": [
     "career-ops-hq/career-ops",
-    "nano-Collective/nanocoder"
+    "nano-Collective/nanocoder",
+    "stablyai/orca",
+    "twentyhq/twenty",
+    "kubernetes-sigs/headlamp",
+    "openeverest/openeverest",
+    "activepieces/activepieces",
+    "neatlogs/neatroots",
+    "reticlehq/reticle",
+    "repowise-dev/repowise",
+    "Budibase/budibase",
+    "directus/directus",
+    "payloadcms/payload"
   ],
   "filters": {
     "maxBodyChars": 4500,
